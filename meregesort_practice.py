@@ -1,10 +1,10 @@
 import math
 
-input_list = [1, 8, 5, 3, 9, 10, 7, 6, 2, 4]
+input_list = [1, 8, 13, 5, 3, 9, 10, 11, 7, 6, 2, 4, 12]
 sort_list = []
-operation_num = math.floor(math.log2(len(input_list))+1)
+operation_num = math.ceil(math.log2(len(input_list)))
 #print(operation_num)
-for i in range(0, operation_num):
+for i in range(0, operation_num+1):
     sort_list.insert(i, [])
 #print(sort_list)
 for i in range(0, len(input_list)):
@@ -37,5 +37,7 @@ def merge(left_list, right_list):
 for i in range(0, operation_num):
     for x in range(0, math.floor(len(sort_list[i])/2)):
         sort_list[i+1].insert(x, merge(sort_list[i][x*2], sort_list[i][x*2+1]))
-    
-print(sort_list[operation_num-1])
+    if len(sort_list[i])%2 == 1:
+        sort_list[i+1].insert(math.ceil(len(sort_list[i])/2)-1, sort_list[i][len(sort_list[i])-1])
+    #print(sort_list[i])
+print(sort_list[operation_num])
