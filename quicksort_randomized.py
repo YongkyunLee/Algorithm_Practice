@@ -2,37 +2,31 @@ import random
 
 example = [5, 6, 4, 3, 9, 7, 2, 1, 8]
 
-def partition(array):
-    pivot_num = random.randint(0, len(array)-1)
+def choose_pivot(array, lo, hi):
+    pivot_num = random.randint(lo, hi) #choosing pivot
     pivot = array[pivot_num]
-    array.remove(pivot)
-    array.insert(0, pivot)
-    i = 1
-    for j in range(1, len(array)):
-        if array[j] < pivot:
-            temp = array[j]
-            array[j] = array[i]
-            array[i] = temp
-            i += 1
-    array.remove(pivot)
-    array.insert(i-1, pivot)
-    left = []
-    right = []
-    for i in range(0, array.index(pivot)):
-        left.insert(i, array[i])
-    for j in range(0, len(array)-array.index(pivot)-1):
-        right.insert(j, array[array.index(pivot)+1+j])    
-    #print(pivot)
-    #print(array)
-    return [left, pivot, right]
+    print(pivot)
+    return pivot
 
-def quicksort(array):
-    if len(array) == 1:
+def partition(array, pivot, lo, hi):
+    array.remove(pivot)
+    array.insert(lo, pivot) #moving the pivot to the 1st place of the sector
+    #print(array)
+    i = lo + 1
+    for j in range(lo + 1, hi + 1):
+        if array[j] < pivot:
+            array[i], array[j] = array[j], array[i] #swap
+            i += 1
+    array[lo], array[i-1] = array[i-1], array[lo] #swap
+    print(array)
+
+def quicksort(array, lo, hi):
+    if hi <= lo:
         return array
-    elif len(array) == 0:
-        return array
-    partition_result = partition(array)
-    #print(partition_result)
-    return quicksort(partition_result[0])+[partition_result[1]]+quicksort(partition_result[2])
+    pivot = choose_pivot(array, lo, hi)
+    partition(array, pivot, lo, hi)
+    quicksort(array, lo, array.index(pivot)-1)
+    quicksort(array, array.index(pivot)+1, hi)
+    return array
     
-print(quicksort(example))            
+print(quicksort(example, 0, len(example)-1))
